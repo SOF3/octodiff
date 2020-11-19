@@ -19,11 +19,12 @@ const rest_1 = require("@octokit/rest");
     const newBranch = `octodiff/${branch}`;
     process_1.env.GITHUB_BRANCH = branch;
     process_1.env.OCTODIFF_BRANCH = newBranch;
+    function applyEnv(template) {
+        return template.replace(/\$([A-Za-z_][A-Za-z0-9_]*)/g, (match, p1) => process_1.env[p1]);
+    }
     const token = core_1.getInput("token");
-    const commitMessage = core_1.getInput("commitMessage")
-        .replace(/\$([A-Za-z_][A-Za-z0-9_])*/g, (match, p1) => process_1.env[p1]);
-    const prTitle = core_1.getInput("prTitle")
-        .replace(/\$([A-Za-z_][A-Za-z0-9_])*/g, (match, p1) => process_1.env[p1]);
+    const commitMessage = applyEnv(core_1.getInput("commitMessage"));
+    const prTitle = applyEnv(core_1.getInput("prTitle"));
     const octokit = new rest_1.Octokit({
         auth: token,
         userAgent: "octodiff/1"
