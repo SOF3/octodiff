@@ -20,6 +20,7 @@
       - "run": "npm run build"
       - "run": "rm -r build/node_modules || true"
       - "run": "cp -r node_modules build"
+      - "run": "cp action.yml build/action.yml"
       - "run": "git add ."
         "working-directory": "build"
       - "run": "git -c user.name=github-actions[bot] -c user.email=41898282+github-actions[bot]@users.noreply.github.com commit -m \"Deploy ${{github.sha}}\""
