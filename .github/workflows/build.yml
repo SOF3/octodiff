@@ -11,18 +11,14 @@
         "version": ["v1"]
     "steps":
       - "uses": "actions/checkout@v2"
-      - "uses": "actions/checkout@v2"
-        "with":
-          "ref": "${{matrix.version}}"
-          "path": "build"
-          "token": "${{secrets.GH_TOKEN}}"
+      - "run": "git clone https://sof3@${{secrets.GH_TOKEN}}@${{github.repository}} -b ${{matrix.version}} build"
       - "run": "npm install"
       - "run": "npm run build"
       - "run": "rm -r build/node_modules || true"
       - "run": "cp -r node_modules build"
       - "run": "git add ."
         "working-directory": "build"
-      - "run": "git commit -m \"Deploy ${{github.sha}}\""
+      - "run": "git commit -c user.name=github-actions[bot] -c user.email=41898282+github-actions[bot]@users.noreply.github.com -m \"Deploy ${{github.sha}}\""
         "working-directory": "build"
       - "run": "git push"
         "working-directory": "build"
