@@ -22,7 +22,7 @@
       - "run": "cp -r node_modules build"
       - "run": "git add ."
         "working-directory": "build"
-      - "run": "git commit --author='github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com>' -m \"Deploy ${{github.sha}}\""
+      - "run": "git commit -c user.name=github-actions[bot] -c user.email=41898282+github-actions[bot]@users.noreply.github.com -m \"Deploy ${{github.sha}}\""
         "working-directory": "build"
       - "run": "git push"
         "working-directory": "build"
