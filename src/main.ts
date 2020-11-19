@@ -11,11 +11,13 @@ import {Octokit} from "@octokit/rest"
 	env.GITHUB_BRANCH = branch
 	env.OCTODIFF_BRANCH = newBranch
 
+	function applyEnv(template: string) : string {
+		return template.replace(/\$([A-Za-z_][A-Za-z0-9_]*)/g, (match, p1) => env[p1] as string)
+	}
+
 	const token = getInput("token")
-	const commitMessage = getInput("commitMessage")
-		.replace(/\$([A-Za-z_][A-Za-z0-9_])*/g, (match, p1) => env[p1] as string)
-	const prTitle = getInput("prTitle")
-		.replace(/\$([A-Za-z_][A-Za-z0-9_])*/g, (match, p1) => env[p1] as string)
+	const commitMessage = applyEnv(getInput("commitMessage"))
+	const prTitle = applyEnv(getInput("prTitle"))
 
 	const octokit = new Octokit({
 		auth: token,
