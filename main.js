@@ -29,8 +29,9 @@ const rest_1 = require("@octokit/rest");
         userAgent: "octodiff/1"
     });
     const whoami = (yield octokit.users.getAuthenticated()).data.login;
-    const exitCode = yield exec_1.exec("git", ["diff", "--exit-code"]);
+    const exitCode = yield exec_1.exec("git", ["diff", "HEAD", "--exit-code"]);
     if (exitCode === 0) {
+        core_1.info("No files changed. Run `git add` before octodiff if you would like to consider unstaged files in the diff.");
         return;
     }
     const repoFull = process_1.env.GITHUB_REPOSITORY;
@@ -39,7 +40,7 @@ const rest_1 = require("@octokit/rest");
     yield exec_1.exec("git", ["-c", "user.name=github-actions[bot]", "-c", "user.email=41898282+github-actions[bot]@users.noreply.github.com", "commit", "-m", commitMessage]);
     yield exec_1.exec("git", ["remote", "add", "octodiff-token", `https://${whoami}:${token}@github.com/${repoFull}`]);
     yield exec_1.exec("git", ["push", "-u", "octodiff-token", newBranch, "--force"]);
-    yield octokit.pulls.create({
+    const result = yield octokit.pulls.create({
         owner: repoFull.split("/")[0],
         repo: repoFull.split("/")[1],
         title: prTitle,
@@ -47,4 +48,6 @@ const rest_1 = require("@octokit/rest");
         base: branch,
         body: `Triggered by the ${process_1.env.GITHUB_WORKFLOW} workflow`
     });
-}))();
+    core_1.info(`Opened pull request #${result.data.number}: ${result.data.html_url}`);
+}))()
+    .catch(core_1.setFailed);
