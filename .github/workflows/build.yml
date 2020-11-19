@@ -11,7 +11,11 @@
         "version": ["v1"]
     "steps":
       - "uses": "actions/checkout@v2"
-      - "run": "git clone https://sof3@${{secrets.GH_TOKEN}}@${{github.repository}} -b ${{matrix.version}} build"
+      - "uses": "actions/checkout@v2"
+        "with":
+          "ref": "${{matrix.version}}"
+          "path": "build"
+          "token": "${{secrets.GH_TOKEN}}"
       - "run": "npm install"
       - "run": "npm run build"
       - "run": "rm -r build/node_modules || true"
