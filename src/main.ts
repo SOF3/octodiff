@@ -32,7 +32,7 @@ import {Octokit} from "@octokit/rest"
 
 	await exec("git", ["checkout", "-b", newBranch])
 	await exec("git", ["add", "-A"])
-	await exec("git", ["-c", "user.name=github-actions[bot]", "-c", "user.email=41898282+github-actions[bot]@users.noreply.github.com", "commit", "-m", commitMessage])
+	await exec("git", ["commit", "--author=github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com>", "-m", commitMessage])
 	await exec("git", ["remote", "add", "octodiff-token", `https://${whoami}:${token}@github.com/${repoFull}`])
 	await exec("git", ["push", "-u", "octodiff-token", newBranch, "--force"])
 
