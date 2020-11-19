@@ -29,7 +29,7 @@ const rest_1 = require("@octokit/rest");
         userAgent: "octodiff/1"
     });
     const whoami = (yield octokit.users.getAuthenticated()).data.login;
-    const exitCode = yield exec_1.exec("git", ["diff", "HEAD", "--exit-code"]);
+    const exitCode = yield exec_1.exec("git", ["diff", "HEAD", "--exit-code"], { ignoreReturnCode: true });
     if (exitCode === 0) {
         core_1.info("No files changed. Run `git add` before octodiff if you would like to consider unstaged files in the diff.");
         return;
