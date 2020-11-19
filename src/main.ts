@@ -23,7 +23,7 @@ import {Octokit} from "@octokit/rest"
 	})
 	const whoami = (await octokit.users.getAuthenticated()).data.login
 
-	const exitCode = await exec("git", ["diff", "HEAD", "--exit-code"])
+	const exitCode = await exec("git", ["diff", "HEAD", "--exit-code"], {ignoreReturnCode: true})
 	if(exitCode === 0) {
 		info("No files changed. Run `git add` before octodiff if you would like to consider unstaged files in the diff.")
 		return
