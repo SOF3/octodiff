@@ -14,7 +14,7 @@
       - "uses": "actions/checkout@v2"
         "with":
           "ref": "${{matrix.version}}"
-        "path": "build"
+          "path": "build"
       - "run": "npm install"
       - "run": "npm run build"
       - "run": "rm -r build/node_modules || true"
