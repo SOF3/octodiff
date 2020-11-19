@@ -1,0 +1,27 @@
+"name": "Build"
+"on":
+  "push":
+    "branches": ["master"]
+"jobs":
+  "build":
+    "name": "TypeScript Build"
+    "runs-on": ["ubuntu-latest"]
+    "strategy":
+      "matrix":
+        "version": "v1"
+    "steps":
+      - "uses": "actions/checkout@v2"
+      - "uses": "actions/checkout@v2"
+        "with":
+          "ref": "${{matrix.version}}"
+        "path": "build"
+      - "run": "npm install"
+      - "run": "npm run build"
+      - "run": "rm -r build/node_modules || true"
+      - "run": "cp -r node_modules build"
+      - "run": "git add ."
+        "working-directory": "build"
+      - "run": "git commit -m \"Deploy ${{github.sha}}\""
+        "working-directory": "build"
+      - "run": "git push"
+        "working-directory": "build"
