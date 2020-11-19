@@ -1,6 +1,6 @@
 import {env} from "process"
 
-import {getInput} from "@actions/core"
+import {getInput, info, setFailed} from "@actions/core"
 import {exec} from "@actions/exec"
 import {Octokit} from "@octokit/rest"
 
@@ -23,8 +23,9 @@ import {Octokit} from "@octokit/rest"
 	})
 	const whoami = (await octokit.users.getAuthenticated()).data.login
 
-	const exitCode = await exec("git", ["diff", "--exit-code"])
+	const exitCode = await exec("git", ["diff", "HEAD", "--exit-code"])
 	if(exitCode === 0) {
+		info("No files changed. Run `git add` before octodiff if you would like to consider unstaged files in the diff.")
 		return
 	}
 
@@ -36,7 +37,7 @@ import {Octokit} from "@octokit/rest"
 	await exec("git", ["remote", "add", "octodiff-token", `https://${whoami}:${token}@github.com/${repoFull}`])
 	await exec("git", ["push", "-u", "octodiff-token", newBranch, "--force"])
 
-	await octokit.pulls.create({
+	const result = await octokit.pulls.create({
 		owner: repoFull.split("/")[0],
 		repo: repoFull.split("/")[1],
 		title: prTitle,
@@ -44,4 +45,7 @@ import {Octokit} from "@octokit/rest"
 		base: branch,
 		body: `Triggered by the ${env.GITHUB_WORKFLOW} workflow`
 	})
+
+	info(`Opened pull request #${result.data.number}: ${result.data.html_url}`)
 })()
+	.catch(setFailed)
