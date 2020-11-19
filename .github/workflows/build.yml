@@ -15,6 +15,7 @@
         "with":
           "ref": "${{matrix.version}}"
           "path": "build"
+          "token": "${{secrets.GH_TOKEN}}"
       - "run": "npm install"
       - "run": "npm run build"
       - "run": "rm -r build/node_modules || true"
