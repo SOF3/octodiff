@@ -1,0 +1,18 @@
+"name": "octodiff"
+"author": "SOFe <sofe2038@gmail.com>"
+"description": "GitHub action to send PR when git diff is dirty"
+"inputs":
+  "token":
+    "description": "The access token to send the diff to a branch and creates a pull request"
+    "required": true
+  "commitMessage":
+    "description": "The commit message template"
+    "required": false
+    "default": "$GITHUB_WORKFLOW for $GITHUB_SHA"
+  "prTitle":
+    "description": "The pull request title template"
+    "required": false
+    "default": "$GITHUB_WORKFLOW for $GITHUB_BRANCH"
+"runs":
+  "using": "node12"
+  "main": "main.js"
