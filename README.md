@@ -59,7 +59,7 @@ jobs:
         with:
           components: rustfmt
       - run: cargo fmt
-      - uses: SOF3/octodiff
+      - uses: SOF3/octodiff@v1
         with:
           token: ${{secrets.GH_TOKEN}}
 ```
