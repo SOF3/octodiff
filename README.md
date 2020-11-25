@@ -68,12 +68,12 @@ jobs:
 ### `black` (python)
 
 ```yaml
-name: rustfmt
+name: python reformat
 on:
   push:
     branches: "**"
 jobs:
-  rustfmt:
+  black:
     runs-on: [ubuntu-20.04]
     steps:
       - uses: actions/checkout@v2
