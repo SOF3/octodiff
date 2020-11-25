@@ -64,3 +64,25 @@ jobs:
         with:
           token: ${{secrets.GH_TOKEN}}
 ```
+
+### `black` (python)
+
+```yaml
+name: rustfmt
+on:
+  push:
+    branches: "**"
+jobs:
+  rustfmt:
+    runs-on: [ubuntu-20.04]
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v2
+        with:
+          python-version: "3.9"
+      - run: pip3 install black
+      - run: black src
+      - uses: SOF3/octodiff@v1
+        with:
+          token: ${{secrets.GH_TOKEN}}
+```
