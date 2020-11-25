@@ -1,10 +1,11 @@
 # octodiff
-GitHub action to send PR when git diff is dirty
+Create a pull request when git diff is dirty.
 
-This tool is mostly useful for code style workflows.
-
-You need to provide an access token so that
-octodiff can create branches and pull requests for you.
+Let's say we have a tool that modifies our source code a bit,
+e.g. a code formatter.
+Since the workflow is automatic, we don't want to overwrite the branch.
+Instead, the workflow creates a *pull request* if the working directory is dirty,
+similar to the dependabot style.
 
 octodiff **only** affects branches starting with `octodiff/`.
 Furthermore, octodiff always force-pushes.
